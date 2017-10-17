@@ -1,0 +1,8 @@
+
+private ExtentReports extent = ReportUtil.getInstance();
+
+	@BeforeSuite
+	public void setUp() {
+		ConfigFileReader.loadProperties(System.getProperty("user.dir")+"\\config\\config.properties", false);			
+	}
+	@Test(dataProvider="getData")

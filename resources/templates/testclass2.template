@@ -1,0 +1,35 @@
+
+
+		WebObject.REPORT = extent.startTest(testName); 
+		if(!Controller.getRunModeOfTestCase(testName, currentTestSuite , BootTestNG.currentTestSuiteXL.get(currentTestSuite))){
+			WebObject.REPORT.log(LogStatus.SKIP,"Skipping the Test Case as RUNMODE in TestCases sheet is N");
+			throw new SkipException("Skipping the Test Case as RUNMODE in TestCases sheet is N");
+		}
+		if(data==null){
+			WebObject.REPORT.log(LogStatus.SKIP,"Skipping the Test Case as data sheet has no data for this testcase");
+			throw new SkipException("Skipping the Test Case as data sheet has no data for this testcase");
+		}	
+		else{
+			if(data.get(PublicVariables.TEST_SUITE_DATA_COLUMN_RUNMODE).equals("N")){
+				WebObject.REPORT.log(LogStatus.SKIP,"Skipping the testset as data sheet has RUNMODE=N");
+				throw new SkipException("Skipping the testset as data sheet has RUNMODE=N");
+			}
+			Controller.executeTestStepsSerially(testName,testcaseDesc,testlinkTCId,currentTestSuite, BootTestNG.currentTestSuiteXL.get(currentTestSuite), data);			
+		}
+	}
+
+	@DataProvider
+	public Object[][] getData(){
+		return ReadingDataSheetOfTestCase.getData(testName,currentTestSuite, BootTestNG.currentTestSuiteXL.get(currentTestSuite));
+	}
+
+
+	@AfterMethod
+	public void tearDown() {
+		extent.endTest(WebObject.REPORT);
+		extent.flush();
+
+	}
+
+}
+
